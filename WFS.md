@@ -166,7 +166,7 @@ route_mm_temp_0d |Platforms: Marine Mammals - Parameter: TEMP - Time coverage: f
 
 ## EXAMPLE
 
-### OPENLAYERS EXAMPLE
+### OPENLAYERS 4 EXAMPLE
 
 Platform of type: Drifting Buoy
 ```javascript
@@ -177,14 +177,83 @@ Platform of type: Drifting Buoy
 
 ```
 
-### LEAFLET EXAMPLE
+### LEAFLET 1.2.0 EXAMPLE
 
 Platform of type: Drifting Buoy
 ```javascript
+var geojsonMarkerOptions = {
+    'RADIUS': 4,
+    'FILLCOLOR': '#ff7800',
+    'COLOR': '#000',
+    'WEIGHT': 1,
+    'OPACITY': 1,
+    'FILLOPACITY': 0.8,
+};
 
+var WFS_Parameters = {
+    'SERVICE': 'WFS',
+    'VERSION': '2.0.0',
+    'REQUEST': 'GetFeature',
+    'TYPENAME': 'emodnet:PlatformDriftBuoy',
+    'OUTPUTFORMAT': 'text/javascript',
+    'FORMAT_OPTIONS': 'callback:getJson',
+};
+
+var parameters = L.Util.extend(WFS_Parameters);
+var URL ='http://geoserver.emodnet-physics.eu/geoserver/emodnet/ows' + L.Util.getParamString(parameters);
+
+var ajax = $.ajax({
+    url: URL,
+    dataType: 'jsonp',
+    jsonpCallback: 'getJson',
+    success: function (response) {
+        layer = L.geoJson(response, {
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, geojsonMarkerOptions);
+            },
+            onEachFeature: function (feature, layer) {
+                layer.bindPopup("PlatformID=" + feature.properties["PlatformID"]);        
+            },
+        }).addTo(map);            
+    }
+});
 ```
 
 #### Data Products - Platforms: Argo - Parameter: PSAL - Time coverage: last 60 days - Elevation: near surface to 50 m - QC: 0 or 1  
 ```javascript
+var WFS_Parameters = {
+    'SERVICE': 'WFS',
+    'VERSION': '2.0.0',
+    'REQUEST': 'GetFeature',
+    'TYPENAME': 'emodnet:route_ar_psal_60d',
+    'OUTPUTFORMAT': 'text/javascript',
+    'FORMAT_OPTIONS': 'callback:getJson',       
+    'ELEVATION': '1/1',
+    'CQL_FILTER': 'qc=0 OR qc=1', 
+    'STYLES':'refer to [Data Products Layers styling guide]',
+    'ENV':'refer to [Data Products Layers styling guide]'   
+    };
 
+var parameters = L.Util.extend(WFS_Parameters);
+var URL ='http://geoserver.emodnet-physics.eu/geoserver/emodnet/ows' + L.Util.getParamString(parameters);
+
+var ajax = $.ajax({
+    url: URL,
+    dataType: 'jsonp',
+    jsonpCallback: 'getJson',
+    success: function (response) {
+        layer = L.geoJson(response, {   
+            style: function (feature) {
+                return {
+                    stroke: false,
+                    fillColor: 'FFFFFF',
+                    fillOpacity: 0
+                };
+            },             
+            onEachFeature: function (feature, layer) {
+                layer.bindPopup("PlatformID=" + feature.properties["PlatformID"]);        
+            },
+        }).addTo(map);            
+    }
+});
 ```

@@ -83,7 +83,7 @@ The value pof the **yearrange** filter is the concatenation of the start and enb
 
 Example: `viewparams=yearrange:19002015`
 
-## Layers for Data Products
+## Layers for Data Products (Route)
 Name | Description | Link | Filters ([see note](./WMS.md#note-for-data-products-layers))
 ---- | ----------- | ---- | -------
 route_ar_psal_60d |Platforms: Argo - Parameter: PSAL - Time coverage: last 60 days|[GetCapabilities](http://geoserver.emodnet-physics.eu/geoserver/emodnet/route_ar_psal_60d/wms?service=WMS&version=1.1.0&request=GetCapabilities&namespace=emodnet) - [Layers Preview](http://geoserver.emodnet-physics.eu/geoserver/emodnet/wms?service=WMS&version=1.1.0&request=GetMap&layers=emodnet:route_ar_psal_60d&styles=&bbox=-180,-90,180,90&width=768&height=382&srs=EPSG:4326&format=application/openlayers)| Elevation - QC
@@ -163,7 +163,7 @@ route_mm_temp_0d |Platforms: Marine Mammals - Parameter: TEMP - Time coverage: f
 
 ## EXAMPLE
 
-### OPENLAYERS EXAMPLE
+### OPENLAYERS 4 EXAMPLE
 
 Platform of type: Drifting Buoy
 ```javascript
@@ -174,7 +174,8 @@ var layer = new ol.layer.Tile({
 		'LAYERS': 'PlatformDriftBuoy', 
 		'VERSION': '1.3.0',		
         'FORMAT': 'image/png'        
-		}
+		},
+        serverType: 'geoserver'
 	})
 });
 ```
@@ -182,16 +183,17 @@ Data Products - Platforms: Argo - Parameter: PSAL - Time coverage: last 60 days 
 ```javascript
 var layer = new ol.layer.Tile({          
 	source: new ol.source.TileWMS({
-	url: 'http://geoserver.emodnet-physics.eu/geoserver/emodnet/PlatformAll/wms',
+	url: 'http://geoserver.emodnet-physics.eu/geoserver/emodnet/route_ar_psal_60d/wms',
 	params: {
-		'LAYERS': 'PlatformDriftBuoy', 
+		'LAYERS': 'route_ar_psal_60d', 
 		'VERSION': '1.3.0',		
 		'FORMAT': 'image/png',
 		'ELEVATION': '1/1',
 		'CQL_FILTER': 'qc=0 OR qc=1',
 		'STYLES':'refer to [Data Products Layers styling guide]',
 		'ENV':'refer to [Data Products Layers styling guide]'       
-		}
+		},
+        serverType: 'geoserver'
 	})
 });
 ```
@@ -210,12 +212,12 @@ var layer = new ol.layer.Tile({
 });
 ```
 
-### LEAFLET EXAMPLE
+### LEAFLET 1.2.0 EXAMPLE
 
 Platform of type: Drifting Buoy
 ```javascript
 var layer = L.tileLayer.wms(
-	'http://geoserver.emodnet-physics.eu/geoserver/emodnet/PlatformAll/wms', 
+	'http://geoserver.emodnet-physics.eu/geoserver/emodnet/PlatformDriftBuoy/wms', 
 	{
 		'LAYERS': 'PlatformDriftBuoy', 
 		'VERSION': '1.3.0',
@@ -226,7 +228,7 @@ var layer = L.tileLayer.wms(
 Data Products - Platforms: Argo - Parameter: PSAL - Time coverage: last 60 days - Elevation: near surface to 50 m - QC: 0 or 1  
 ```javascript
 var layer = L.tileLayer.wms(
-	'http://geoserver.emodnet-physics.eu/geoserver/emodnet/PlatformAll/wms', 
+	'http://geoserver.emodnet-physics.eu/geoserver/emodnet/route_ar_psal_60d/wms', 
 	{
 		'LAYERS': 'route_ar_psal_60d', 
 		'VERSION': '1.3.0',
@@ -240,7 +242,7 @@ var layer = L.tileLayer.wms(
 Sea Level Products - PSMSLtrends - year range: from 1950 to 2000
 ```javascript
 var layer = L.tileLayer.wms(
-	'http://geoserver.emodnet-physics.eu/geoserver/emodnet/PlatformAll/wms', 
+	'http://geoserver.emodnet-physics.eu/geoserver/emodnet/PSMSLtrends/wms', 
 	{
 		'LAYERS': 'PSMSLtrends', 
 		'VERSION': '1.3.0',
