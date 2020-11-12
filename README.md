@@ -1,3 +1,5 @@
+# SOME OF THESE INFORMATION ARE OUTDATED - UPDATE ARE IN PROGRESS
+
 # EMODnet-Physics
 How to use the data service products from EMODNET-Physics
 
